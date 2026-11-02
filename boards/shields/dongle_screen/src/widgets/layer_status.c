@@ -5,6 +5,7 @@
  */
 
 #include <zephyr/kernel.h>
+#include "retro_colors.h"
 #include <zephyr/logging/log.h>
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
@@ -25,6 +26,7 @@ struct layer_status_state
 
 static void set_layer_symbol(lv_obj_t *label, struct layer_status_state state)
 {
+    lv_obj_set_style_text_color(label, lv_color_hex(yads_layer_color(state.index)), 0);
     if (state.label == NULL)
     {
         char text[7] = {};

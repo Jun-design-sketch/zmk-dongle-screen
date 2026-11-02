@@ -5,6 +5,7 @@
  */
 
 #include <zephyr/kernel.h>
+#include "retro_colors.h"
 
 #include <zephyr/logging/log.h>
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
@@ -36,6 +37,7 @@ static void set_wpm(struct zmk_widget_wpm_status *widget, struct wpm_status_stat
     char wpm_text[12];
     snprintf(wpm_text, sizeof(wpm_text), "%i", state.wpm);
     lv_label_set_text(widget->wpm_label, wpm_text);
+    lv_obj_set_style_text_color(widget->wpm_label, lv_color_hex(yads_wpm_color(state.wpm)), 0);
 }
 
 static void wpm_status_update_cb(struct wpm_status_state state)

@@ -5,6 +5,7 @@
  */
 
 #include <zephyr/kernel.h>
+#include "retro_colors.h"
 #include <zephyr/bluetooth/services/bas.h>
 
 #include <zephyr/logging/log.h>
@@ -75,14 +76,7 @@ static bool is_peripheral_reconnecting(uint8_t source, uint8_t new_level) {
 
 static void draw_battery(lv_obj_t *canvas, uint8_t level, bool usb_present) {
     
-    if (level < 1)
-    {
-        lv_canvas_fill_bg(canvas, lv_palette_main(LV_PALETTE_RED), LV_OPA_COVER);
-    } else if (level <= 10) {
-        lv_canvas_fill_bg(canvas, lv_palette_main(LV_PALETTE_YELLOW), LV_OPA_COVER);
-    } else {
-        lv_canvas_fill_bg(canvas, lv_color_white(), LV_OPA_COVER);
-    }
+    lv_canvas_fill_bg(canvas, lv_color_hex(yads_battery_color(level)), LV_OPA_COVER);
 
     
     lv_draw_rect_dsc_t rect_fill_dsc;
@@ -137,28 +131,13 @@ static void set_battery_symbol(lv_obj_t *widget, struct battery_state state) {
 
     draw_battery(symbol, state.level, state.usb_present);
     
+    lv_obj_set_style_text_color(label, lv_color_hex(yads_battery_color(state.level)), 0);
     if (state.level > 0) {
-        lv_obj_set_style_text_color(label, lv_color_white(), 0);
         lv_label_set_text_fmt(label, "%4u", state.level);
     } else {
-        lv_obj_set_style_text_color(label, lv_palette_main(LV_PALETTE_RED), 0);
         lv_label_set_text(label, "X");
     }
 
-    if (state.level < 1)
-    {
-        lv_obj_set_style_text_color(label, lv_palette_main(LV_PALETTE_RED), 0);
-        lv_label_set_text(label, "X");
-    } else if (state.level <= 10) {
-        lv_obj_set_style_text_color(label, lv_palette_main(LV_PALETTE_YELLOW), 0);
-        lv_label_set_text_fmt(label, "%4u", state.level);
-    } else {
-        lv_obj_set_style_text_color(label, lv_color_white(), 0);
-        lv_label_set_text_fmt(label, "%4u", state.level);
-    }
-    
-    
-    
     lv_obj_clear_flag(symbol, LV_OBJ_FLAG_HIDDEN);
     lv_obj_move_foreground(symbol);
     lv_obj_clear_flag(label, LV_OBJ_FLAG_HIDDEN);

@@ -9,8 +9,7 @@
 
 static inline uint32_t yads_layer_color(uint8_t layer) {
     static const uint32_t palette[] = {
-        0x6BBF6B, 0x88FFCC, 0xA8CFFF, 0xFF77AA,
-        0xFFD966, 0xFFAA55, 0xB6FF8E, 0x66B2A3,
+        0x88FFCC, 0xA8CFFF, 0xFFAACC, 0xD6B3FF, 0xFFD0A8,
     };
     /* The fixed, nonempty palette is independent of keymap layer count. */
     return palette[layer % (sizeof(palette) / sizeof(palette[0]))];
@@ -25,9 +24,9 @@ static inline uint32_t yads_wpm_color(int wpm) {
 
 static inline uint32_t yads_battery_color(uint8_t level) {
     /* Zero/unknown keeps the existing red X behavior. */
-    if (level <= 10) return 0xFF453A;
+    if (level <= 10) return 0xFF6961;
     if (level <= 20) return 0xFFAA55;
     if (level <= 50) return 0xFFD966;
-    return 0x6BBF6B;
+    return 0xB6FF8E;
 }
 #endif
